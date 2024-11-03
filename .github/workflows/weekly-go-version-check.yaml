@@ -34,7 +34,8 @@ jobs:
       - name: Get latest go patch version
         id: patch-version
         run: |
-          echo "GO_PATCH_VERSION=$(curl --silent https://go.dev/VERSION?m=text)" >> $GITHUB_ENV
+          echo "GO_PATCH_VERSION=$(curl --silent https://go.dev/VERSION?m=text | sed -n 's/^go\([0-9.]*\).*/\1/p')" >> $GITHUB_ENV
+          echo "${{ env.GO_PATCH_VERSION }}"
           sed -i 's/GO_VERSION=[0-9\.]*/GO_VERSION=${{ env.GO_PATCH_VERSION }}/' Makefile
           sed -i 's/golang:[0-9\.]*/golang:${{ env.GO_PATCH_VERSION }}/' Tiltfile
           echo "${{ env.GO_PATCH_VERSION }}"
