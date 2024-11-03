@@ -34,10 +34,10 @@ jobs:
       - name: Get latest go patch version
         id: patch-version
         run: |
-          export "GO_PATCH_VERSION=$(curl --silent https://go.dev/VERSION?m=text)" >> $GITHUB_ENV
+          echo "GO_PATCH_VERSION=$(curl --silent https://go.dev/VERSION?m=text)" >> $GITHUB_ENV
           sed -i 's/GO_VERSION=[0-9\.]*/GO_VERSION=${{ env.GO_PATCH_VERSION }}/' Makefile
           sed -i 's/golang:[0-9\.]*/golang:${{ env.GO_PATCH_VERSION }}/' Tiltfile
-          echo $env.GO_PATCH_VERSION
+          echo "${{ env.GO_PATCH_VERSION }}"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # tag=v7.0.5
         with:
